@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import TaskSerializer, UserSerializer
+from .serializers import TaskSerializer, UserSerializer, TaskListSerializer
 from rest_framework.response import Response
 from .models import Task
 from django_filters.rest_framework import DjangoFilterBackend
@@ -26,6 +27,11 @@ class TaskList(generics.ListAPIView):
     serializer_class = TaskSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['status','id','title','description',]
+    #
+    # def get(self, request, *args, **kwargs):
+    #     tasks = list(Task.objects.all())
+    #     serializer = TaskListSerializer(tasks,many=False)
+    #     return Response(serializer.data)
     
 
 class TaskDetail(generics.RetrieveUpdateAPIView):
@@ -47,6 +53,6 @@ class TaskDelete(generics.DestroyAPIView):
 
 
 class CreateuserView(generics.CreateAPIView):
-    model = get_user_model()
+    model = User
     permission_classes = [AllowAny]
     serializer_class = UserSerializer
